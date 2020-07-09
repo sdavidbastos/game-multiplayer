@@ -17,26 +17,37 @@ function createGame() {
 
     function movePlayer(command) {
         const { playerId, keyPressed } = command;
+        const { players } = state;
 
-        const {players} = state 
+        console.log(`[game.movePlayer()] ${keyPressed}`);
 
-        const moves = {
+        const acceptedMoves = {
             ArrowUp(player) {
-                player.y -= 1;
+                if (player.y - 1 >= 0) {
+                    player.y -= 1;
+                }
             },
             ArrowRight(player) {
-                player.x += 1;
+                if (player.x + 1 < screen.width) {
+                    player.x += 1;
+                }
             },
             ArrowDown(player) {
-                player.y += 1;
+                if (player.y + 1 < screen.width) {
+                    player.y += 1;
+                }
             },
             ArrowLeft(player) {
-                player.x -= 1;
+                if (player.x - 1 >= 0) {
+                    player.x -= 1;
+                }
             },
         };
 
-        if (moves[keyPressed]) {
-            moves[keyPressed](players[playerId]);
+        const moveFunction = acceptedMoves[keyPressed];
+
+        if (moveFunction) {
+            moveFunction(players[playerId]);
         }
     }
     return {
@@ -47,25 +58,26 @@ function createGame() {
 
 const game = createGame();
 
-const keyboardListener = createKeyboardListener()
+const keyboardListener = createKeyboardListener();
 
-keyboardListener.subscribe(game.movePlayer)
+keyboardListener.subscribe(game.movePlayer);
 
 function createKeyboardListener() {
-
     const state = {
-        observers: []
+        observers: [],
+    };
+
+    function subscribe(observerFunction) {
+        state.observers.push(observerFunction);
     }
 
-    function subscribe(observerFunction){
-        state.observers.push(observerFunction)
-    }
+    function notifyAll(command) {
+        console.log(
+            `[keyboardListener] Notififying ${state.observers.length} observers`
+        );
 
-    function notifyAll(command){
-        console.log(`Notififying ${state.observers.length} observers`)
-
-        for (const observerFunction of state.observers){
-            observerFunction(command)
+        for (const observerFunction of state.observers) {
+            observerFunction(command);
         }
     }
 
@@ -79,13 +91,13 @@ function createKeyboardListener() {
             keyPressed,
         };
 
-        notifyAll(command)
+        notifyAll(command);
 
         // game.movePlayer(command);
     }
     return {
-        subscribe
-    }
+        subscribe,
+    };
 }
 
 renderScreen();
