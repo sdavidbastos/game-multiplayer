@@ -2,26 +2,55 @@ export default function createGame() {
     const state = {
         players: {},
         fruits: {},
-        screen:{
+        screen: {
             width: 20,
-            height: 20
-        }
+            height: 20,
+        },
     };
-    
+
+    const observers = []
+
+    function subscribe(observerFunction){
+        observers.push(observerFunction)
+    }
+
+    function notifyAll(command){
+        for(const observerFunction of observers){
+            observerFunction(command)
+        }
+    }
 
     function addPlayer(command) {
-        const { playerId, playerX, playerY } = command;
+        let { playerId, playerX, playerY } = command;
+
+        playerX =
+            playerX in command
+                ? command.playerX
+                : Math.floor(Math.random() * state.screen.width);
+        playerY =
+            playerY in command
+                ? command.playerY
+                : Math.floor(Math.random() * state.screen.height);
 
         state.players[playerId] = {
             x: playerX,
             y: playerY,
         };
+
+        notifyAll({
+            type:"add-player",
+            playerId,
+            playerX,
+            playerY
+        })
     }
 
     function removePlayer(command) {
         const { playerId } = command;
 
         delete state.players[playerId];
+
+        notifyAll({type: 'remove-player', playerId})
     }
 
     function addFruit(command) {
@@ -85,6 +114,16 @@ export default function createGame() {
             }
         }
     }
+
+    /**
+     * Object.assign:
+     * Faz um merge. Trocando somente o necessario
+     * e adicionado novas informações
+     */
+    function setState(newState) {
+        Object.assign(state, newState);
+    }
+
     return {
         addFruit,
         removeFruit,
@@ -92,5 +131,7 @@ export default function createGame() {
         removePlayer,
         movePlayer,
         state,
+        setState,
+        subscribe
     };
 }

@@ -1,0 +1,25 @@
+{
+  "name": "game-multiplayer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdavidbastos/game-multiplayer.git"
+  },
+  "keywords": [],
+  "author": "David Tavares Bastos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sdavidbastos/game-multiplayer/issues"
+  },
+  "homepage": "https://github.com/sdavidbastos/game-multiplayer#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  }
+}
