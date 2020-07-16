@@ -41,7 +41,7 @@ node, npm ou yarn
 
 O projeto foi desenvolvido utilizando as seguintes tecnologias
 
-- socketio,
+- socketio
 - Design Patterns Factory
 - Design Patterns Strategy
 - Design Patterns Observer
