@@ -7,15 +7,23 @@ const app = express();
 const server = http.createServer(app);
 const sockets = socketio(server);
 
-
 app.use(express.static("./public"));
 
 const game = createGame();
 
+/**
+ * game.start() abaixo insere as frutas
+ * */
+game.start();
+
+/**
+ * game.subscribe garante que todos os clients
+ * conectados tenham acesso as informações.
+ */
+
 game.subscribe((command) => {
-    console.log(`> EMITTING: ${command.type}`)
-    sockets.emit(command.type, command)
-})
+    sockets.emit(command.type, command);
+});
 
 sockets.on("connection", (socket) => {
     const playerId = socket.id;
@@ -23,21 +31,25 @@ sockets.on("connection", (socket) => {
     console.log(`> PLAYER connected: ${playerId}`);
 
     game.addPlayer({ playerId });
-
     socket.emit("setup", game.state);
 
     socket.on("disconnect", () => {
-        game.removePlayer({ playerId: playerId });
+        game.removePlayer({ playerId });
 
         console.log(`> PLAYER disconnect ${playerId}`);
     });
 
     socket.on("move-player", (command) => {
-        command.playerId = playerId
-        command.type = "move-player"
+        /**
+         * Ao sobreescrever as informações aqui no
+         * server-side, garanto que o usuario não
+         * burle as regras!
+         */
+        command.playerId = playerId;
+        command.type = "move-player";
 
-        game.movePlayer(command)
-    })
+        game.movePlayer(command);
+    });
 });
 
 server.listen(3000, () => {

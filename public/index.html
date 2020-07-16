@@ -1,23 +1,44 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game</title>
-    <style>
-        #screen{
-            border: 10px solid #ccc;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-            image-rendering: -moz-crisp-edges;
-            width: 400px;
-            height: 400px;
-        }
-    </style>
-    <script src="/socket.io/socket.io.js"></script>
-</head>
-<body>
-    <canvas id="screen" width="20" height="20"></canvas>
-    <script defer type="module" src="./script.js"></script>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Game</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            html {
+                height: 100vh;
+                width: 100vw;
+                box-sizing: border-box;
+            }
+            body {
+                background-color: #737373;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            #screen {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #262626;
+                border: 5px solid #0d0d0d;
+                image-rendering: pixelated;
+                image-rendering: crisp-edges;
+                image-rendering: -moz-crisp-edges;
+                width: 400px;
+                height: 400px;
+            }
+        </style>
+        <script src="/socket.io/socket.io.js"></script>
+    </head>
+    <body>
+        <canvas id="screen" width="20" height="20"></canvas>
+        <script defer type="module" src="./script.js"></script>
+    </body>
 </html>

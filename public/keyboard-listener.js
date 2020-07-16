@@ -13,13 +13,14 @@ export default function createKeyboardListener(document) {
     }
 
     /**
-     * command é um objeto em 
-     * geral com dois ou mais parametros
+     * command é um objeto. Em 
+     * geral com dois ou mais atributos/metodos
      * {type: "", playerId: ""}
      * 
      * O notifyAll executa esse parâmetro para
-     * todas as funções do subscribe
+     * todas as funções do dentro do array observers
      */
+
     function notifyAll(command) {
         for (const observerFunction of state.observers) {
             observerFunction(command);
